@@ -84,7 +84,7 @@ server <- function(input, output) {
   if (token == "") stop("GITHUB_PAT is not set.")
 
   # Construct raw GitHub URL
-  url <- paste0("https://raw.githubusercontent.com/", repo, "/", branch, "/", path)
+  url <- paste0("https://raw.githubusercontent.com/", repo, "/refs/heads/", branch, "/", path)
 
   # Download with token
   res <- httr::GET(url, httr::add_headers(Authorization = paste("token", token)))
