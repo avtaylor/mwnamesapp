@@ -225,7 +225,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
     req(selected_letter_district())
     
     df <- df_data() %>%
-      select(name, district_list) %>%
+      select(name, frequency, district_list) %>%
       unnest(district_list) %>%
       mutate(
         district = toupper(trimws(district_list)),
@@ -233,7 +233,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
       ) %>%
       filter(district == toupper(input$selected_district),
              first_letter == selected_letter_district()) %>%
-      arrange(name)
+      arrange(frequency)
     
     datatable(df %>% select(Name = name, Frequency = frequency), options = list(pageLength = 10),
               rownames = FALSE)
