@@ -89,7 +89,7 @@ api_url <- paste0("https://api.github.com/repos/", repo, "/contents/", path, "?r
 res <- httr::GET(api_url, httr::add_headers(Authorization = paste("token", token)))
 
 if (httr::status_code(res) != 200) {
-  stop("Failed to fetch file from GitHub API. Status code: ", httr::status_code(res),rawToChar(res$content))
+  stop("Failed to fetch file from GitHub API. Status code: ", httr::status_code(res))
 }
 
 # Extract download URL from API response
@@ -99,7 +99,7 @@ download_url <- httr::content(res)$download_url
 df <- read.csv(text = rawToChar(res$content), stringsAsFactors = FALSE)
 colnames(df) <- tolower(trimws(colnames(df)))
 if (!all(c("name", "frequency", "district") %in% colnames(df))) {
-    stop("CSV must contain 'name', 'frequency', and 'district' columns.")
+    stop("CSV must contain 'name', 'frequency', and 'district' columns.",rawToChar(res$content))
   }
 
   # Clean district list
