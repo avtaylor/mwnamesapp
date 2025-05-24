@@ -75,24 +75,28 @@ ui <- fluidPage(
 server <- function(input, output) {
   df_data <- reactive({
   # Parameters for GitHub access
-  repo <- "yavtaylor/malawinames"        # e.g., "malawi-names/namedata"
-  path <- "data/MWI_firstnames.csv"               # path inside the repo
-  branch <- "main"                       # or "master"
+repo <- "yavtaylor/malawinames"
+path <- "data/MWI_firstnames.csv"
+branch <- "main"
+token <- Sys.getenv("GITHUB_PAT")
 
-  # Get the GitHub token from environment variable
-  token <- Sys.getenv("GITHUB_PAT")
-  if (token == "") stop("GITHUB_PAT is not set.")
+if (token == "") stop("GITHUB_PAT is not set.")
 
-  # Construct raw GitHub URL
-  url <- paste0("https://raw.githubusercontent.com/", repo, "/", branch, "/", path)
+# Construct GitHub API URL
+api_url <- paste0("https://api.github.com/repos/", repo, "/contents/", path, "?ref=", branch)
 
-  # Download with token
-  res <- httr::GET(url, httr::add_headers(Authorization = paste("token", token)))
-  if (httr::status_code(res) != 200) {
-    stop("Failed to fetch the file from GitHub. Status code: ", httr::status_code(res))
-  }
+# GET request with Authorization header
+res <- httr::GET(api_url, httr::add_headers(Authorization = paste("token", token)))
 
-  df <- read.csv(text = httr::content(res, as = "text"), stringsAsFactors = FALSE)
+if (httr::status_code(res) != 200) {
+  stop("Failed to fetch file from GitHub API. Status code: ", httr::status_code(res))
+}
+
+# Extract download URL from API response
+download_url <- httr::content(res)$download_url
+
+# Read CSV directly
+df <- read.csv(download_url, stringsAsFactors = FALSE)
   colnames(df) <- tolower(colnames(df))
 
   if (!all(c("name", "frequency", "district") %in% colnames(df))) {
