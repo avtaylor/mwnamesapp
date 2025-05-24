@@ -235,7 +235,8 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
              first_letter == selected_letter_district()) %>%
       arrange(name)
     
-    datatable(df %>% select(name), colnames = c("Name"))
+    datatable(df %>% select(Name = name, Frequency = frequency), options = list(pageLength = 10),
+              rownames = FALSE)
   })
   
   
