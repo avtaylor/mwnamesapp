@@ -99,9 +99,8 @@ download_url <- httr::content(res)$download_url
 df <- read.csv(download_url, stringsAsFactors = FALSE)
 colnames(df) <- tolower(trimws(colnames(df)))
 if (!all(c("name", "frequency", "district") %in% colnames(df))) {
-    stop("CSV must contain 'name', 'frequency', and 'district' columns.",colnames(df))
-  }
-
+    stop("CSV must contain 'name', 'frequency', and 'district' columns.",head(df, 10))
+}
   # Clean district list
   df <- df %>%
     mutate(
