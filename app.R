@@ -75,7 +75,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   df_data <- reactive({
   # Parameters for GitHub access
-repo <- "yavtaylor/malawinames"
+repo <- "avtaylor/malawinames"
 path <- "data/MWI_firstnames.csv"
 branch <- "main"
 token <- Sys.getenv("GITHUB_PAT")
