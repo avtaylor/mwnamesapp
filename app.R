@@ -48,9 +48,11 @@ if (httr::status_code(res) != 200) {
 download_url <- httr::content(res)$download_url
 
 # Read CSV directly
-df <- read.csv(download_url, stringsAsFactors = FALSE)
+df <- read.csv(download_url, stringsAsFactors = FALSE,check.names = FALSE))
 colnames(df) <- tolower(trimws(colnames(df)))
-
+if (!all(c("name", "frequency", "district") %in% colnames(df))) {
+    stop("CSV must contain 'name', 'frequency', and 'district' columns.",head(df, 10))
+}
   # Clean district list
   df <- df %>%
     mutate(
@@ -76,7 +78,7 @@ colnames(df) <- tolower(trimws(colnames(df)))
 
 output$status <- renderPrint({
     df <- df_data()
-    paste("Rows:", nrow(df), " | Columns:", paste(names(df), collapse = ", "))
+    paste("Rows:", nrow(df), " | Columns:", paste(nrow(df), collapse = ", "))
   })
   
   output$summary_table <- renderDT({
