@@ -73,7 +73,8 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  df_data <- reactive({
+
+df_data <- reactive({
   # Parameters for GitHub access
 repo <- "avtaylor/malawinames"
 path <- "data/MWI_firstnames.csv"
@@ -167,6 +168,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
   
   output$summary_table <- renderDT({
     df <- df_data()
+    print(head(df))
     datatable(df %>%
                 select(name, frequency, num_districts, district),
               options = list(pageLength = 10))
