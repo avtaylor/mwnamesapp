@@ -89,7 +89,7 @@ api_url <- paste0("https://api.github.com/repos/", repo, "/contents/", path, "?r
 res <- httr::GET(api_url, httr::add_headers(Authorization = paste("token", token)))
 
 if (httr::status_code(res) != 200) {
-  stop("Failed to fetch file from GitHub API. Status code: ", httr::status_code(res))
+  stop("Failed to fetch file from GitHub API. Status code: ", httr::status_code(res),rawToChar(res$content)))
 }
 
 # Extract download URL from API response
