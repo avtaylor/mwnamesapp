@@ -5,6 +5,7 @@ library(DT)
 library(readr)
 library(tidyr)
 library(ggplot2)
+library(httr)
 
 ui <- fluidPage(
   titlePanel("Malawi Name-District Analysis"),
@@ -72,47 +73,54 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  
   df_data <- reactive({
-    # Replace with your repo details
-    library(httr)
-    
-    # Replace with your repo details
-    token <- Sys.getenv("GITHUB_PAT")
-    url <- "https://raw.githubusercontent.com/avtaylor/malawinames/main/data/MWI_firstnames.csv"
-    
-    # Send authenticated GET request
-    res <- GET(url, add_headers(Authorization = paste("token", token)))
-    
-    # Check for success
-    if (status_code(res) != 200) {
-      stop("Failed to fetch the file from GitHub. Status code: ", status_code(res))
-    }
-    
-    # Read the CSV content from the response
-    df <- read.csv(text = content(res, "text"), stringsAsFactors = FALSE)
-    colnames(df) <- tolower(colnames(df))
-    
-    if (!all(c("name", "frequency", "district") %in% colnames(df))) {
-      stop("CSV must contain 'name', 'frequency', and 'district' columns.")
-    }
-    
-    # Clean and process
-    df <- df %>%
-      mutate(
-        frequency = as.integer(frequency),
-        district_clean = gsub("[\\{\\}'\"]", "", district),
-        district_list_raw = strsplit(district_clean, ",\\s*"),
-        district_list = lapply(district_list_raw, function(dlist) {
-          cleaned <- gsub("-(EAST|WEST|NORTH|SOUTH|URBAN|RURAL|CITY)$", "",
-                          gsub("(EAST|WEST|NORTH|SOUTH|URBAN|RURAL|CITY)$", "", dlist))
-          cleaned <- gsub("-", "", cleaned)
-          unique(trimws(cleaned))
-        }),
-        num_districts = sapply(district_list, length)
-      )
-    return(df)
-  })
+  # Parameters for GitHub access
+  repo <- "yavtaylor/malawinames"        # e.g., "malawi-names/namedata"
+  path <- "data/MWI_firstnames.csv"               # path inside the repo
+  branch <- "main"                       # or "master"
+
+  # Get the GitHub token from environment variable
+  token <- Sys.getenv("GITHUB_PAT")
+  if (token == "") stop("GITHUB_PAT is not set.")
+
+  # Construct raw GitHub URL
+  url <- paste0("https://raw.githubusercontent.com/", repo, "/", branch, "/", path)
+
+  # Download with token
+  res <- httr::GET(url, httr::add_headers(Authorization = paste("token", token)))
+  if (httr::status_code(res) != 200) {
+    stop("Failed to fetch the file from GitHub. Status code: ", httr::status_code(res))
+  }
+
+  df <- read.csv(text = httr::content(res, as = "text"), stringsAsFactors = FALSE)
+  colnames(df) <- tolower(colnames(df))
+
+  if (!all(c("name", "frequency", "district") %in% colnames(df))) {
+    stop("CSV must contain 'name', 'frequency', and 'district' columns.")
+  }
+
+  # Clean district list
+  df <- df %>%
+    mutate(
+      frequency = as.integer(frequency),
+      district_clean = gsub("[\\{\\}'\"]", "", district),
+      district_list_raw = strsplit(district_clean, ",\\s*"),
+      district_list = lapply(district_list_raw, function(dlist) {
+        cleaned <- gsub("-(EAST|WEST|NORTH|SOUTH|URBAN|RURAL|CITY)$", "",
+                        gsub("(EAST|WEST|NORTH|SOUTH|URBAN|RURAL|CITY)$", "", dlist))
+        cleaned <- gsub(" ", "", toupper(cleaned))
+        cleaned <- gsub("NKHATA-BAY", "NKHATABAY", cleaned, fixed = TRUE)
+        cleaned <- gsub("BLANTYRECITY|BLANTYREURBAN|BLANTYRERURAL", "BLANTYRE", cleaned)
+        cleaned <- gsub("LILONGWECITY|LILONGWEEAST|LILONGWEWEST", "LILONGWE", cleaned)
+        cleaned <- gsub("ZOMBARURAL|ZOMBAURBAN", "ZOMBA", cleaned)
+        unique(trimws(cleaned))
+      }),
+      num_districts = sapply(district_list, length)
+    )
+
+  return(df)
+})
+
   
   selected_letter <- reactive({
     df <- df_data()
