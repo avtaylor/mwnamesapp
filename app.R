@@ -96,7 +96,7 @@ if (httr::status_code(res) != 200) {
 download_url <- httr::content(res)$download_url
 
 # Read CSV directly
-df <- read.csv(text = rawToChar(download_url), stringsAsFactors = FALSE)
+df <- read.csv(text = rawToChar(res$content), stringsAsFactors = FALSE)
 colnames(df) <- tolower(trimws(colnames(df)))
 if (!all(c("name", "frequency", "district") %in% colnames(df))) {
     stop("CSV must contain 'name', 'frequency', and 'district' columns.",colnames(df))
