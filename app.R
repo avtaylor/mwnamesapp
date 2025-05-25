@@ -148,7 +148,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
       mutate(first_letter = toupper(substr(name, 1, 1))) %>%
       group_by(first_letter) %>%
       summarise(name_count = n(), .groups = "drop") %>%
-      arrange(name)
+      arrange(first_letter)
     
     sel <- input$name_index_rows_selected
     if (length(sel)) {
