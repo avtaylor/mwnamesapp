@@ -140,10 +140,9 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
   return(df)
 })
 
-  
-  selected_letter <- reactive({
+
+    selected_letter <- reactive({
     df <- df_data()
-    
     name_index <- df %>%
       mutate(first_letter = toupper(substr(name, 1, 1))) %>%
       group_by(first_letter) %>%
@@ -191,7 +190,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
       filter(district == toupper(input$selected_district)) %>%
       group_by(first_letter) %>%
       summarise(name_count = n(), .groups = "drop") %>%
-      arrange(name)
+      arrange(first_letter)
     
     df$first_letter[selected]
   })
