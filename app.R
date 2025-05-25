@@ -54,17 +54,22 @@ ui <- fluidPage(
                  ),
                  tableOutput("clicked_letter_names")
         ),
-         tabPanel("Histogram by Letter and District",
-                 fluidRow(
-                   column(4,
-                          uiOutput("hist_district_selector_ui")
-                   )
-                 ),
-                 plotlyOutput("letter_district_histogram", height = "500px"),
-                 hr(),
-                 h4("Names Starting with Selected Letter"),
-                 tableOutput("clicked_letter_names")
-        ), 
+        tabPanel("Histogram by Letter and District",
+        fluidRow(
+          column(4,
+            uiOutput("hist_district_selector_ui")
+          )
+        ),
+        fluidRow(
+          column(6,
+            plotlyOutput("letter_district_histogram", height = "500px")
+          ),
+          column(6,
+            h4("Names Starting with Selected Letter"),
+            tableOutput("clicked_letter_names")
+          )
+        )
+      ),
         tabPanel("Histogram by Letter",
                  fluidRow(
                    column(4,
