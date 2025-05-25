@@ -136,10 +136,6 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
 })
 
   
-
-
-
-
   selected_letter <- reactive({
     df <- df_data()
     
@@ -157,6 +153,24 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
     }
   })
   
+  output$names_by_letter_district <- renderDataTable({
+    req(input$selected_district)
+    req(selected_letter_district())
+    
+    df <- df_data() %>%
+      select(name, frequency, district_list) %>%
+      unnest(district_list) %>%
+      mutate(
+        district = toupper(trimws(district_list)),
+        first_letter = toupper(substr(name, 1, 1))
+      ) %>%
+      filter(district == toupper(input$selected_district),
+             first_letter == selected_letter_district()) %>%
+      arrange(name)
+    
+    datatable(df %>% select(Name = name, Frequency = frequency), options = list(pageLength = 10),
+              rownames = FALSE)
+  })
   selected_letter_district <- reactive({
     selected <- input$letter_district_index_rows_selected
     if (is.null(selected)) return(NULL)
@@ -183,7 +197,6 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
   
   output$summary_table <- renderDT({
     df <- df_data()
-    print(head(df))
     datatable(df %>%
                 select(name, frequency, num_districts, district),
               options = list(pageLength = 10))
@@ -213,7 +226,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
     
     filtered <- df %>%
       filter(toupper(substr(name, 1, 1)) == selected_letter()) %>%
-      arrange(desc(frequency))
+      arrange(name)
     
     datatable(filtered %>% select(Name = name, Frequency = frequency),
               options = list(pageLength = 10),
@@ -234,6 +247,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
     selectInput("hist_selected_district", "Choose District:",
                 choices = districts, selected = districts[1])
   })
+  
   
   output$names_by_letter_district <- renderDataTable({
     req(input$selected_district)
@@ -304,7 +318,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
               options = list(pageLength = 26))
   })
   
- output$letter_district_histogram <- plotly::renderPlotly({
+  output$letter_district_histogram <- plotly::renderPlotly({
     req(input$hist_selected_district)
     df <- df_data()
     
@@ -382,6 +396,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
     matched_names
   })
   
+  
   output$district_letter_histogram <- renderPlot({
     req(input$selected_letter)
     df <- df_data()
@@ -409,17 +424,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   })
   
-  output$names_by_letter <- renderTable({
-    df <- req(get_data())
-    click <- event_data("plotly_click", source = "letterplot")
-    if (is.null(click)) return()
-
-    clicked_letter <- click$x
-    df <- df[startsWith(toupper(df$name), clicked_letter), ]
-    df <- df[order(-df$frequency), ]
-    head(df, 20)
-  })
-
+  
   output$debug_columns <- renderPrint({
     df <- req(input$file)
     names(read.csv(df$datapath, nrows = 1))
