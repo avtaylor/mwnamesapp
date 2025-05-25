@@ -6,7 +6,6 @@ library(readr)
 library(tidyr)
 library(ggplot2)
 library(httr)
-install.packages("plotly")  # Ensures Connect installs it
 library(plotly)
 
 ui <- fluidPage(
