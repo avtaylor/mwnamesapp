@@ -136,6 +136,10 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
 })
 
   
+
+
+
+
   selected_letter <- reactive({
     df <- df_data()
     
@@ -415,7 +419,6 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
     df <- df[order(-df$frequency), ]
     head(df, 20)
   })
-}
 
   output$debug_columns <- renderPrint({
     df <- req(input$file)
