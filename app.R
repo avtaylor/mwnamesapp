@@ -6,6 +6,7 @@ library(readr)
 library(tidyr)
 library(ggplot2)
 library(httr)
+library(plotly)
 
 ui <- fluidPage(
   titlePanel("Malawi Name-District Analysis"),
@@ -50,16 +51,20 @@ ui <- fluidPage(
                      h4("Names Starting With Selected Letter in District"),
                      dataTableOutput("names_by_letter_district")
                    )
-                 )
+                 ),
+                 tableOutput("clicked_letter_names")
         ),
-        tabPanel("Histogram by Letter and District",
+         tabPanel("Histogram by Letter and District",
                  fluidRow(
                    column(4,
                           uiOutput("hist_district_selector_ui")
                    )
                  ),
-                 plotOutput("letter_district_histogram", height = "500px")
-        ),
+                 plotlyOutput("letter_district_histogram", height = "500px"),
+                 hr(),
+                 h4("Names Starting with Selected Letter"),
+                 tableOutput("clicked_letter_names")
+        ), 
         tabPanel("Histogram by Letter",
                  fluidRow(
                    column(4,
@@ -295,12 +300,12 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
               options = list(pageLength = 26))
   })
   
-  output$letter_district_histogram <- renderPlot({
+ output$letter_district_histogram <- plotly::renderPlotly({
     req(input$hist_selected_district)
     df <- df_data()
     
     expanded <- df %>%
-      select(name, district_list) %>%
+      select(name, frequency, district_list) %>%
       tidyr::unnest(district_list) %>%
       mutate(
         district = toupper(trimws(district_list)),
@@ -309,9 +314,9 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
     
     filtered <- expanded %>%
       filter(district == toupper(input$hist_selected_district)) %>%
-      count(first_letter)
+      count(first_letter, name = "frequency")
     
-    ggplot(filtered, aes(x = first_letter, y = n)) +
+    p <- ggplot(filtered, aes(x = first_letter, y = frequency)) +
       geom_bar(stat = "identity", fill = "steelblue") +
       labs(
         title = paste("Name Frequencies by First Letter in", input$hist_selected_district),
@@ -319,6 +324,58 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
         y = "Frequency"
       ) +
       theme_minimal()
+    
+    plotly::ggplotly(p, source = "letter_hist_district")
+  })
+  
+  output$clicked_letter_names <- renderTable({
+    req(input$hist_selected_district)
+    
+    # Get the click event
+    click <- plotly::event_data("plotly_click", source = "letter_hist_district")
+    if (is.null(click)) return(NULL)
+    
+    df <- df_data()
+    
+    # Prepare data again so we know the correct letter levels
+    expanded <- df %>%
+      select(name, frequency, district_list) %>%
+      tidyr::unnest(district_list) %>%
+      mutate(
+        district = toupper(trimws(district_list)),
+        first_letter = toupper(substr(name, 1, 1))
+      )
+    
+    # Filter by district and compute frequency per letter
+    filtered <- expanded %>%
+      filter(district == toupper(input$hist_selected_district)) %>%
+      count(first_letter, name = "frequency") %>%
+      arrange(first_letter)
+    
+    # Map the x-value (numeric) back to letter label
+    x_index <- round(as.numeric(click$x))
+    if (x_index < 1 || x_index > nrow(filtered)) {
+      return(data.frame(Message = paste("Invalid letter index:", x_index)))
+    }
+    
+    clicked_letter <- filtered$first_letter[x_index]
+    
+    # Now filter expanded data using the correct clicked letter
+    matched_names <- expanded %>%
+      filter(
+        district == toupper(input$hist_selected_district),
+        first_letter == clicked_letter
+      ) %>%
+      group_by(name) %>%
+      summarise(total_frequency = sum(frequency), .groups = "drop") %>%
+      arrange(desc(total_frequency)) %>%
+      head(20)
+    
+    if (nrow(matched_names) == 0) {
+      return(data.frame(Message = paste("No names starting with", clicked_letter)))
+    }
+    
+    matched_names
   })
   
   output$district_letter_histogram <- renderPlot({
@@ -348,7 +405,18 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   })
   
-  
+  output$names_by_letter <- renderTable({
+    df <- req(get_data())
+    click <- event_data("plotly_click", source = "letterplot")
+    if (is.null(click)) return()
+
+    clicked_letter <- click$x
+    df <- df[startsWith(toupper(df$name), clicked_letter), ]
+    df <- df[order(-df$frequency), ]
+    head(df, 20)
+  })
+}
+
   output$debug_columns <- renderPrint({
     df <- req(input$file)
     names(read.csv(df$datapath, nrows = 1))
