@@ -567,6 +567,33 @@
         "Archs": "curl.so.dSYM"
       }
     },
+    "data.table": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "data.table",
+        "Version": "1.15.4",
+        "Title": "Extension of `data.frame`",
+        "Depends": "R (>= 3.1.0)",
+        "Imports": "methods",
+        "Suggests": "bit64 (>= 4.0.0), bit (>= 4.0.4), R.utils, xts, zoo (>=\n1.8-1), yaml, knitr, markdown",
+        "Description": "Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns, friendly and fast character-separated-value read/write. Offers a natural and flexible syntax, for faster development.",
+        "License": "MPL-2.0 | file LICENSE",
+        "URL": "https://r-datatable.com, https://Rdatatable.gitlab.io/data.table,\nhttps://github.com/Rdatatable/data.table",
+        "BugReports": "https://github.com/Rdatatable/data.table/issues",
+        "VignetteBuilder": "knitr",
+        "ByteCompile": "TRUE",
+        "Authors@R": "c(\n  person(\"Tyson\",\"Barrett\",        role=c(\"aut\",\"cre\"), email=\"t.barrett88@gmail.com\"),\n  person(\"Matt\",\"Dowle\",           role=\"aut\",          email=\"mattjdowle@gmail.com\"),\n  person(\"Arun\",\"Srinivasan\",      role=\"aut\",          email=\"asrini@pm.me\"),\n  person(\"Jan\",\"Gorecki\",          role=\"aut\"),\n  person(\"Michael\",\"Chirico\",      role=\"aut\"),\n  person(\"Toby\",\"Hocking\",         role=\"aut\", comment = c(ORCID=\"0000-0002-3146-0865\")),\n  person(\"Pasha\",\"Stetsenko\",      role=\"ctb\"),\n  person(\"Tom\",\"Short\",            role=\"ctb\"),\n  person(\"Steve\",\"Lianoglou\",      role=\"ctb\"),\n  person(\"Eduard\",\"Antonyan\",      role=\"ctb\"),\n  person(\"Markus\",\"Bonsch\",        role=\"ctb\"),\n  person(\"Hugh\",\"Parsonage\",       role=\"ctb\"),\n  person(\"Scott\",\"Ritchie\",        role=\"ctb\"),\n  person(\"Kun\",\"Ren\",              role=\"ctb\"),\n  person(\"Xianying\",\"Tan\",         role=\"ctb\"),\n  person(\"Rick\",\"Saporta\",         role=\"ctb\"),\n  person(\"Otto\",\"Seiskari\",        role=\"ctb\"),\n  person(\"Xianghui\",\"Dong\",        role=\"ctb\"),\n  person(\"Michel\",\"Lang\",          role=\"ctb\"),\n  person(\"Watal\",\"Iwasaki\",        role=\"ctb\"),\n  person(\"Seth\",\"Wenchel\",         role=\"ctb\"),\n  person(\"Karl\",\"Broman\",          role=\"ctb\"),\n  person(\"Tobias\",\"Schmidt\",       role=\"ctb\"),\n  person(\"David\",\"Arenburg\",       role=\"ctb\"),\n  person(\"Ethan\",\"Smith\",          role=\"ctb\"),\n  person(\"Francois\",\"Cocquemas\",   role=\"ctb\"),\n  person(\"Matthieu\",\"Gomez\",       role=\"ctb\"),\n  person(\"Philippe\",\"Chataignon\",  role=\"ctb\"),\n  person(\"Nello\",\"Blaser\",         role=\"ctb\"),\n  person(\"Dmitry\",\"Selivanov\",     role=\"ctb\"),\n  person(\"Andrey\",\"Riabushenko\",   role=\"ctb\"),\n  person(\"Cheng\",\"Lee\",            role=\"ctb\"),\n  person(\"Declan\",\"Groves\",        role=\"ctb\"),\n  person(\"Daniel\",\"Possenriede\",   role=\"ctb\"),\n  person(\"Felipe\",\"Parages\",       role=\"ctb\"),\n  person(\"Denes\",\"Toth\",           role=\"ctb\"),\n  person(\"Mus\",\"Yaramaz-David\",    role=\"ctb\"),\n  person(\"Ayappan\",\"Perumal\",      role=\"ctb\"),\n  person(\"James\",\"Sams\",           role=\"ctb\"),\n  person(\"Martin\",\"Morgan\",        role=\"ctb\"),\n  person(\"Michael\",\"Quinn\",        role=\"ctb\"),\n  person(\"@javrucebo\",\"\",          role=\"ctb\"),\n  person(\"@marc-outins\",\"\",        role=\"ctb\"),\n  person(\"Roy\",\"Storey\",           role=\"ctb\"),\n  person(\"Manish\",\"Saraswat\",      role=\"ctb\"),\n  person(\"Morgan\",\"Jacob\",         role=\"ctb\"),\n  person(\"Michael\",\"Schubmehl\",    role=\"ctb\"),\n  person(\"Davis\",\"Vaughan\",        role=\"ctb\"),\n  person(\"Leonardo\",\"Silvestri\",   role=\"ctb\"),\n  person(\"Jim\",\"Hester\",           role=\"ctb\"),\n  person(\"Anthony\",\"Damico\",       role=\"ctb\"),\n  person(\"Sebastian\",\"Freundt\",    role=\"ctb\"),\n  person(\"David\",\"Simons\",         role=\"ctb\"),\n  person(\"Elliott\",\"Sales de Andrade\", role=\"ctb\"),\n  person(\"Cole\",\"Miller\",          role=\"ctb\"),\n  person(\"Jens Peder\",\"Meldgaard\", role=\"ctb\"),\n  person(\"Vaclav\",\"Tlapak\",        role=\"ctb\"),\n  person(\"Kevin\",\"Ushey\",          role=\"ctb\"),\n  person(\"Dirk\",\"Eddelbuettel\",    role=\"ctb\"),\n  person(\"Benjamin\",\"Schwendinger\", role=\"ctb\"),\n  person(\"Tony\",\"Fischetti\",       role=\"ctb\"),\n  person(\"Ofek\",\"Shilon\",          role=\"ctb\"),\n  person(\"Vadim\",\"Khotilovich\",    role=\"ctb\"),\n  person(\"Hadley\",\"Wickham\",       role=\"ctb\"),\n  person(\"Bennet\",\"Becker\",        role=\"ctb\"),\n  person(\"Kyle\",\"Haynes\",          role=\"ctb\"),\n  person(\"Boniface Christian\",\"Kamgang\", role=\"ctb\"),\n  person(\"Olivier\",\"Delmarcell\",   role=\"ctb\"),\n  person(\"Josh\",\"O'Brien\",         role=\"ctb\"),\n  person(\"Dereck\",\"de Mezquita\",   role=\"ctb\"),\n  person(\"Michael\",\"Czekanski\",    role=\"ctb\")\n  )",
+        "NeedsCompilation": "yes",
+        "Packaged": "2024-03-28 05:25:20 UTC; tysonbarrett",
+        "Author": "Tyson Barrett [aut, cre],\n  Matt Dowle [aut],\n  Arun Srinivasan [aut],\n  Jan Gorecki [aut],\n  Michael Chirico [aut],\n  Toby Hocking [aut] (<https://orcid.org/0000-0002-3146-0865>),\n  Pasha Stetsenko [ctb],\n  Tom Short [ctb],\n  Steve Lianoglou [ctb],\n  Eduard Antonyan [ctb],\n  Markus Bonsch [ctb],\n  Hugh Parsonage [ctb],\n  Scott Ritchie [ctb],\n  Kun Ren [ctb],\n  Xianying Tan [ctb],\n  Rick Saporta [ctb],\n  Otto Seiskari [ctb],\n  Xianghui Dong [ctb],\n  Michel Lang [ctb],\n  Watal Iwasaki [ctb],\n  Seth Wenchel [ctb],\n  Karl Broman [ctb],\n  Tobias Schmidt [ctb],\n  David Arenburg [ctb],\n  Ethan Smith [ctb],\n  Francois Cocquemas [ctb],\n  Matthieu Gomez [ctb],\n  Philippe Chataignon [ctb],\n  Nello Blaser [ctb],\n  Dmitry Selivanov [ctb],\n  Andrey Riabushenko [ctb],\n  Cheng Lee [ctb],\n  Declan Groves [ctb],\n  Daniel Possenriede [ctb],\n  Felipe Parages [ctb],\n  Denes Toth [ctb],\n  Mus Yaramaz-David [ctb],\n  Ayappan Perumal [ctb],\n  James Sams [ctb],\n  Martin Morgan [ctb],\n  Michael Quinn [ctb],\n  @javrucebo [ctb],\n  @marc-outins [ctb],\n  Roy Storey [ctb],\n  Manish Saraswat [ctb],\n  Morgan Jacob [ctb],\n  Michael Schubmehl [ctb],\n  Davis Vaughan [ctb],\n  Leonardo Silvestri [ctb],\n  Jim Hester [ctb],\n  Anthony Damico [ctb],\n  Sebastian Freundt [ctb],\n  David Simons [ctb],\n  Elliott Sales de Andrade [ctb],\n  Cole Miller [ctb],\n  Jens Peder Meldgaard [ctb],\n  Vaclav Tlapak [ctb],\n  Kevin Ushey [ctb],\n  Dirk Eddelbuettel [ctb],\n  Benjamin Schwendinger [ctb],\n  Tony Fischetti [ctb],\n  Ofek Shilon [ctb],\n  Vadim Khotilovich [ctb],\n  Hadley Wickham [ctb],\n  Bennet Becker [ctb],\n  Kyle Haynes [ctb],\n  Boniface Christian Kamgang [ctb],\n  Olivier Delmarcell [ctb],\n  Josh O'Brien [ctb],\n  Dereck de Mezquita [ctb],\n  Michael Czekanski [ctb]",
+        "Maintainer": "Tyson Barrett <t.barrett88@gmail.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2024-03-30 23:50:02 UTC",
+        "Built": "R 4.3.1; aarch64-apple-darwin20; 2024-03-31 02:05:32 UTC; unix",
+        "Archs": "data_table.so.dSYM"
+      }
+    },
     "digest": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com",
@@ -1586,6 +1613,34 @@
         "Built": "R 4.3.0; ; 2023-04-11 04:31:21 UTC; unix"
       }
     },
+    "plotly": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "plotly",
+        "Title": "Create Interactive Web Graphics via 'plotly.js'",
+        "Version": "4.10.4",
+        "Authors@R": "c(person(\"Carson\", \"Sievert\", role = c(\"aut\", \"cre\"),\n    email = \"cpsievert1@gmail.com\", comment = c(ORCID = \"0000-0002-4958-2844\")),\n    person(\"Chris\", \"Parmer\", role = \"aut\",\n    email = \"chris@plot.ly\"),\n    person(\"Toby\", \"Hocking\", role = \"aut\",\n    email = \"tdhock5@gmail.com\"),\n    person(\"Scott\", \"Chamberlain\", role = \"aut\",\n    email = \"myrmecocystus@gmail.com\"),\n    person(\"Karthik\", \"Ram\", role = \"aut\",\n    email = \"karthik.ram@gmail.com\"),\n    person(\"Marianne\", \"Corvellec\", role = \"aut\",\n    email = \"marianne.corvellec@igdore.org\", comment = c(ORCID = \"0000-0002-1994-3581\")),\n    person(\"Pedro\", \"Despouy\", role = \"aut\",\n    email = \"pedro@plot.ly\"),\n    person(\"Salim\", \"Brüggemann\", role = \"ctb\",\n    email = \"salim-b@pm.me\", comment = c(ORCID = \"0000-0002-5329-5987\")),\n    person(\"Plotly Technologies Inc.\", role = \"cph\"))",
+        "License": "MIT + file LICENSE",
+        "Description": "Create interactive web graphics from 'ggplot2' graphs and/or a custom interface to the (MIT-licensed) JavaScript library 'plotly.js' inspired by the grammar of graphics.",
+        "URL": "https://plotly-r.com, https://github.com/plotly/plotly.R,\nhttps://plotly.com/r/",
+        "BugReports": "https://github.com/plotly/plotly.R/issues",
+        "Depends": "R (>= 3.2.0), ggplot2 (>= 3.0.0)",
+        "Imports": "tools, scales, httr (>= 1.3.0), jsonlite (>= 1.6), magrittr,\ndigest, viridisLite, base64enc, htmltools (>= 0.3.6),\nhtmlwidgets (>= 1.5.2.9001), tidyr (>= 1.0.0), RColorBrewer,\ndplyr, vctrs, tibble, lazyeval (>= 0.2.0), rlang (>= 0.4.10),\ncrosstalk, purrr, data.table, promises",
+        "Suggests": "MASS, maps, hexbin, ggthemes, GGally, ggalluvial, testthat,\nknitr, shiny (>= 1.1.0), shinytest (>= 1.3.0), curl, rmarkdown,\nCairo, broom, webshot, listviewer, dendextend, sf, png,\nIRdisplay, processx, plotlyGeoAssets, forcats, withr,\npalmerpenguins, rversions, reticulate, rsvg",
+        "LazyData": "true",
+        "RoxygenNote": "7.2.3",
+        "Encoding": "UTF-8",
+        "Config/Needs/check": "tidyverse/ggplot2, rcmdcheck, devtools, reshape2",
+        "NeedsCompilation": "no",
+        "Packaged": "2024-01-13 20:51:33 UTC; cpsievert",
+        "Author": "Carson Sievert [aut, cre] (<https://orcid.org/0000-0002-4958-2844>),\n  Chris Parmer [aut],\n  Toby Hocking [aut],\n  Scott Chamberlain [aut],\n  Karthik Ram [aut],\n  Marianne Corvellec [aut] (<https://orcid.org/0000-0002-1994-3581>),\n  Pedro Despouy [aut],\n  Salim Brüggemann [ctb] (<https://orcid.org/0000-0002-5329-5987>),\n  Plotly Technologies Inc. [cph]",
+        "Maintainer": "Carson Sievert <cpsievert1@gmail.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2024-01-13 22:40:02 UTC",
+        "Built": "R 4.3.1; ; 2024-01-14 00:44:58 UTC; unix"
+      }
+    },
     "prettyunits": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com",
@@ -2445,7 +2500,7 @@
       "checksum": "e8731db9ec730ce16ead7f5e197b9faa"
     },
     "app2.R": {
-      "checksum": "b63e5b789f1d41ccc12b16bdbd9f6012"
+      "checksum": "2264b8b04ac01b22292812f7d02f9ef0"
     },
     "tests.R": {
       "checksum": "098126257ec8c855b80a4b18839ec7d6"
