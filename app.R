@@ -176,12 +176,13 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
     datatable(df %>% select(Name = name, Frequency = frequency), options = list(pageLength = 10),
               rownames = FALSE)
   })
+
   selected_letter_district <- reactive({
     selected <- input$letter_district_index_rows_selected
     if (is.null(selected)) return(NULL)
     
     df <- df_data() %>%
-      select(name, frequency, district_list) %>%
+      select(name, district_list) %>%
       unnest(district_list) %>%
       mutate(
         district = toupper(trimws(district_list)),
@@ -190,7 +191,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
       filter(district == toupper(input$selected_district)) %>%
       group_by(first_letter) %>%
       summarise(name_count = n(), .groups = "drop") %>%
-      arrange(desc(frequency))
+      arrange(name)
     
     df$first_letter[selected]
   })
