@@ -143,7 +143,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
       mutate(first_letter = toupper(substr(name, 1, 1))) %>%
       group_by(first_letter) %>%
       summarise(name_count = n(), .groups = "drop") %>%
-      arrange(first_letter)
+      arrange(desc(frequency))
     
     sel <- input$name_index_rows_selected
     if (length(sel)) {
@@ -185,7 +185,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
       filter(district == toupper(input$selected_district)) %>%
       group_by(first_letter) %>%
       summarise(name_count = n(), .groups = "drop") %>%
-      arrange(first_letter)
+      arrange(desc(frequency))
     
     df$first_letter[selected]
   })
@@ -226,7 +226,7 @@ if (!all(c("name", "frequency", "district") %in% colnames(df))) {
     
     filtered <- df %>%
       filter(toupper(substr(name, 1, 1)) == selected_letter()) %>%
-      arrange(name)
+      arrange(desc(frequency))
     
     datatable(filtered %>% select(Name = name, Frequency = frequency),
               options = list(pageLength = 10),
