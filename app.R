@@ -9,7 +9,9 @@ library(httr)
 
 ui <- fluidPage(
   titlePanel("Malawi Name-District Analysis"),
-  
+  radioButtons("name_type", "Choose a dataset:",
+               choices = c("First names" = "first", "Surnames" = "surnames"),
+               inline = TRUE),
   # Replace sidebarLayout with just fluidRow or mainPanel content directly
   fluidRow(
     column(
@@ -77,12 +79,16 @@ server <- function(input, output) {
 df_data <- reactive({
   # Parameters for GitHub access
 repo <- "avtaylor/malawinames"
-path <- "data/MWI_firstnames.csv"
+#path <- "data/MWI_firstnames.csv"
 branch <- "main"
 token <- Sys.getenv("GITHUB_PAT")
 
 if (token == "") stop("GITHUB_PAT is not set.")
-
+path <- if (input$name_type == "first") {
+    "data/MWI_firstnames.csv"
+} else {
+    "data/MWI_surnames.csv"
+}
 # Construct GitHub API URL
 api_url <- paste0("https://api.github.com/repos/", repo, "/contents/", path, "?ref=", branch)
 
